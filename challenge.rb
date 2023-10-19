@@ -35,23 +35,17 @@ class Challenge
         COMPANY
       
         output_io << users_emailed.map do |user|
-          <<~USER
-          \t\t#{user[:last_name]}, #{user[:first_name]}, #{user[:email]}
-          \t\t  Previous Token Balance, #{user[:tokens]}
-          \t\t  New Token Balance #{user[:tokens] + company[:top_up]}
-          USER
+          user_output(user: user, company_top_up: company[:top_up])
         end.join
       
         output_io << <<~COMPANY
         \tUsers Not Emailed:
         COMPANY
+
         output_io << users_not_emailed.map do |user|
-          <<~USER
-          \t\t#{user[:last_name]}, #{user[:first_name]}, #{user[:email]}
-          \t\t  Previous Token Balance, #{user[:tokens]}
-          \t\t  New Token Balance #{user[:tokens] + company[:top_up]}
-          USER
+          user_output(user: user, company_top_up: company[:top_up])
         end.join
+
         output_io << <<~TOTAL
         \t\tTotal amount of top ups for #{company[:name]}: #{total_top_ups}
         TOTAL
@@ -59,6 +53,16 @@ class Challenge
 
       # add newline at the end of the file
       output_io << "\n"
+    end
+
+    private
+
+    def user_output(user:, company_top_up:)
+      <<~USER
+      \t\t#{user[:last_name]}, #{user[:first_name]}, #{user[:email]}
+      \t\t  Previous Token Balance, #{user[:tokens]}
+      \t\t  New Token Balance #{user[:tokens] + company_top_up}
+      USER
     end
   end
 end
