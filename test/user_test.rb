@@ -30,4 +30,13 @@ class UserTest < Minitest::Test
 
     assert_equal([2, 1, 3], users.sort.map(&:id))
   end
+
+  def test_user_is_valid_if_all_fields_are_met
+    assert(@user.valid?)
+  end
+
+  def test_user_is_invalid_if_any_field_is_missing
+    @user.first_name = nil
+    refute(@user.valid?)
+  end
 end

@@ -43,6 +43,23 @@ class Company < Struct.new(:id, :name, :top_up, :email_status)
   def <=>(other)
     id <=> other.id
   end
+
+  # Validates correctiveness of the object for the report.
+  # sig { returns(T::Boolean) }
+  def valid?
+    result = 
+      id.is_a?(Numeric) \
+        && name.is_a?(String) \
+        && top_up.is_a?(Numeric) \
+        && (email_status.is_a?(TrueClass) || email_status.is_a?(FalseClass))
+
+    unless result
+      puts("Invalid company detected, this company will be discarted and ignored on the output")
+      puts("Invalid company id: #{id}")
+    end
+
+    result
+  end
 end
 
 # User model used to store User data on a Ruby object for further
@@ -67,6 +84,27 @@ class User < Struct.new(:id, :first_name, :last_name, :email, :company_id, :emai
       cmp
     end
   end
+
+  # Validates correctiveness of the object for the report.
+  # sig { returns(T::Boolean) }
+  def valid?
+    result = 
+      id.is_a?(Numeric) \
+        && first_name.is_a?(String) \
+        && last_name.is_a?(String) \
+        && email.is_a?(String) \
+        && company_id.is_a?(Numeric) \
+        && (active_status.is_a?(TrueClass) || active_status.is_a?(FalseClass)) \
+        && (email_status.is_a?(TrueClass) || email_status.is_a?(FalseClass)) \
+        && tokens.is_a?(Numeric)
+
+    unless result
+      puts("Invalid user detected, this user will be discarted and ignored on the output")
+      puts("Invalid user id: #{id}")
+    end
+
+    result
+  end
 end
 
 # This class is responsible for parsing a raw JSON file into Company and User objects.
@@ -76,9 +114,9 @@ class ChallengeParser
   class << self
     # sig { params(companies_io: T.any(File, StringIO), users_io: T.any(File, StringIO)).returns(T::Array[Company]) }
     def perform(companies_io:, users_io:)
-      companies = JSON.parse(companies_io.read, object_class: Company)
+      companies = JSON.parse(companies_io.read, object_class: Company).filter(&:valid?)
       users_by_company = JSON.parse(users_io.read, object_class: User)
-        .filter(&:active_status)
+        .filter{ |user| user.valid? && user.active_status }
         .sort
         .group_by(&:company_id)
 

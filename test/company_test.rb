@@ -78,4 +78,13 @@ class CompanyTest < Minitest::Test
     other = @company.clone
     assert_equal(0, @company <=> other)
   end
+
+  def test_company_is_valid_if_all_fields_are_met
+    assert(@company.valid?)
+  end
+
+  def test_company_is_invalid_if_any_field_is_missing
+    @company.name = nil
+    refute(@company.valid?)
+  end
 end
