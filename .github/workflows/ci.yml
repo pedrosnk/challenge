@@ -18,4 +18,4 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - run: ruby challenge_test.rb
+    - run: ruby test/challenge_test.rb
