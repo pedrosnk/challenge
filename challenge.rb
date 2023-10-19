@@ -4,7 +4,7 @@ require 'json'
 
 # Company model used to store data on a Ruby object for further
 # data processing.
-class Company < Struct.new(:id, :name, :top_up, :email_status)
+class Company < Struct.new(:id, :name, :top_up, :email_status, keyword_init: true)
   attr_accessor :users
 
   # Method that returns all the users that will be emailed.
@@ -64,7 +64,7 @@ end
 
 # User model used to store User data on a Ruby object for further
 # data processing.
-class User < Struct.new(:id, :first_name, :last_name, :email, :company_id, :email_status, :active_status, :tokens)
+class User < Struct.new(:id, :first_name, :last_name, :email, :company_id, :email_status, :active_status, :tokens, keyword_init: true)
 
   # Method that calculates the top_up value of a token.
   # sig { params(top_up_value: Integer).returns(Integer) }
