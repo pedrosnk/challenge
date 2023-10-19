@@ -2,7 +2,7 @@
 
 class CompaniesFixtures
   class << self
-    def company_1
+    def company_io_1
       StringIO.open(
         <<~JSON
           [{"id": 1, "name": "Blue Orchid", "top_up": 10, "email_status": true}]
@@ -10,7 +10,7 @@ class CompaniesFixtures
       )
     end
 
-    def company_1_email_status_false
+    def company_io_1_email_status_false
       StringIO.open(
         <<~JSON
           [{"id": 1, "name": "Blue Orchid", "top_up": 10, "email_status": false}]
@@ -18,7 +18,7 @@ class CompaniesFixtures
       )
     end
 
-    def unordered_companies
+    def unordered_companies_io
       StringIO.open(
         <<~JSON
           [

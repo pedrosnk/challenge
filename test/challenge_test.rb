@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require 'minitest/autorun'
-require_relative '../challenge'
-require_relative './fixtures/users_fixtures'
-require_relative './fixtures/companies_fixtures'
+require_relative "./test_helper"
 
 require 'stringio'
 
@@ -29,8 +26,8 @@ class ChallengeTest < Minitest::Test
 
     Challenge.perform(
       output_io: output,
-      companies_io: CompaniesFixtures.company_1,
-      users_io: UsersFixtures.users_company_1,
+      companies_io: CompaniesFixtures.company_io_1,
+      users_io: UsersFixtures.users_io_company_1,
     )
 
     assert_equal(
@@ -84,8 +81,8 @@ class ChallengeTest < Minitest::Test
 
     Challenge.perform(
       output_io: output,
-      companies_io: CompaniesFixtures.unordered_companies,
-      users_io: UsersFixtures.users_unordered_companies,
+      companies_io: CompaniesFixtures.unordered_companies_io,
+      users_io: UsersFixtures.users_io_unordered_companies,
     )
 
     assert_equal(
@@ -127,8 +124,8 @@ class ChallengeTest < Minitest::Test
 
     Challenge.perform(
       output_io: output,
-      companies_io: CompaniesFixtures.company_1,
-      users_io: UsersFixtures.users_company_1_unordered,
+      companies_io: CompaniesFixtures.company_io_1,
+      users_io: UsersFixtures.users_io_company_1_unordered,
     )
 
     assert_equal(
@@ -158,8 +155,8 @@ class ChallengeTest < Minitest::Test
 
     Challenge.perform(
       output_io: output,
-      companies_io: CompaniesFixtures.company_1_email_status_false,
-      users_io: UsersFixtures.users_company_1
+      companies_io: CompaniesFixtures.company_io_1_email_status_false,
+      users_io: UsersFixtures.users_io_company_1
     )
 
     assert_equal(
@@ -186,8 +183,8 @@ class ChallengeTest < Minitest::Test
 
     Challenge.perform(
       output_io: output,
-      companies_io: CompaniesFixtures.company_1,
-      users_io: UsersFixtures.users_company_1_inactive_users
+      companies_io: CompaniesFixtures.company_io_1,
+      users_io: UsersFixtures.users_io_company_1_inactive_users
     )
 
     assert_equal(
@@ -222,8 +219,8 @@ class ChallengeTest < Minitest::Test
 
     Challenge.perform(
       output_io: output,
-      companies_io: CompaniesFixtures.company_1,
-      users_io: UsersFixtures.empty_users,
+      companies_io: CompaniesFixtures.company_io_1,
+      users_io: UsersFixtures.empty_users_io,
     )
 
     assert(output.string.strip.empty?)

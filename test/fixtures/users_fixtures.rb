@@ -2,7 +2,22 @@
 
 class UsersFixtures
   class << self
-    def users_company_1
+    def user(params={})
+      user_params = {
+        id: 1,
+        first_name: "John",
+        last_name: "Doe",
+        email: "john.dow@test.com",
+        company_id: 1,
+        email_status: true,
+        active_status: true,
+        tokens: 10
+      }
+      user_params.merge!(params)
+      User.new(**user_params)
+    end
+
+    def users_io_company_1
       StringIO.open(
         <<~JSON
           [
@@ -31,7 +46,7 @@ class UsersFixtures
       )
     end
 
-    def users_unordered_companies
+    def users_io_unordered_companies
       StringIO.open(
         <<~JSON
           [
@@ -80,11 +95,11 @@ class UsersFixtures
       )
     end
 
-    def empty_users
+    def empty_users_io
       StringIO.open("[]")
     end
 
-    def users_company_1_unordered
+    def users_io_company_1_unordered
       StringIO.open(
         <<~JSON
           [
@@ -153,7 +168,7 @@ class UsersFixtures
       )
     end
 
-    def users_company_1_inactive_users
+    def users_io_company_1_inactive_users
       StringIO.open(
         <<~JSON
           [
