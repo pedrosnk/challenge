@@ -3,3 +3,4 @@
 require_relative "./challenge_test"
 require_relative "./company_test"
 require_relative "./user_test"
+require_relative "./challenge_parser_test"
