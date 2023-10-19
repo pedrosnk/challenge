@@ -69,6 +69,7 @@ end
 
 # calling script direclty
 if __FILE__ == $0
+  begin
   output_io = File.open("output.txt", "w")
   companies_io = File.open("companies.json", "r")
   users_io = File.open("users.json", "r")
@@ -80,4 +81,11 @@ if __FILE__ == $0
 
   # close files after execution
   [output_io, companies_io, users_io].each(&:close)
+
+  rescue Errno::ENOENT => e
+    puts "Error openning data files"
+    puts "Error message: #{e.message}"
+    puts "For this script to run successfully you need have companies.json and users.json"
+    puts "on the same folder"
+  end
 end
