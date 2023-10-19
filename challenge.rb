@@ -18,6 +18,7 @@ class Challenge
       companies.sort_by! { |c| c[:id] }
 
       companies.each do |company|
+        next if company[:users]&.empty?
         users_emailed = company[:users].filter do |user|
           user[:email_status] && company[:email_status]
         end
@@ -30,31 +31,34 @@ class Challenge
       
         \tCompany Id: #{company[:id]}
         \tCompany Name: #{company[:name]}
-        \tUser Emailed:
+        \tUsers Emailed:
         COMPANY
       
         output_io << users_emailed.map do |user|
           <<~USER
           \t\t#{user[:last_name]}, #{user[:first_name]}, #{user[:email]}
-          \t\t  Previous Token Balance: #{user[:tokens]}
-          \t\t  New Token Balance: #{user[:tokens] + company[:top_up]}
+          \t\t  Previous Token Balance, #{user[:tokens]}
+          \t\t  New Token Balance #{user[:tokens] + company[:top_up]}
           USER
         end.join
       
         output_io << <<~COMPANY
-        \tUser Not Emailed:
+        \tUsers Not Emailed:
         COMPANY
         output_io << users_not_emailed.map do |user|
           <<~USER
           \t\t#{user[:last_name]}, #{user[:first_name]}, #{user[:email]}
-          \t\t  Previous Token Balance: #{user[:tokens]}
-          \t\t  New Token Balance: #{user[:tokens] + company[:top_up]}
+          \t\t  Previous Token Balance, #{user[:tokens]}
+          \t\t  New Token Balance #{user[:tokens] + company[:top_up]}
           USER
         end.join
         output_io << <<~TOTAL
         \t\tTotal amount of top ups for #{company[:name]}: #{total_top_ups}
         TOTAL
       end
+
+      # add newline at the end of the file
+      output_io << "\n"
     end
   end
 end
