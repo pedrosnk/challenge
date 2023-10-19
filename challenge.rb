@@ -37,7 +37,7 @@ class Company < Struct.new(:id, :name, :top_up, :email_status)
     users.size * top_up
   end
 
-  # This method is used for when the method `sort` is called on an array of User.
+  # This method is used for when the method `sort` is called on an array of Company.
   # The `sort` method knows which fields it should look up to decide how to sort the array.
   # sig { params(other: Company).returns(Integer) }
   def <=>(other)
@@ -60,7 +60,12 @@ class User < Struct.new(:id, :first_name, :last_name, :email, :company_id, :emai
   # The `sort` method knows which fields it should look up to decide how to sort the array.
   # sig { params(other: User).returns(Integer) }
   def <=>(other)
-    last_name&.downcase <=> other.last_name&.downcase
+    cmp = last_name&.downcase <=> other.last_name&.downcase
+    if cmp == 0
+      first_name&.downcase <=> other.first_name&.downcase
+    else
+      cmp
+    end
   end
 end
 
@@ -74,7 +79,7 @@ class ChallengeParser
       companies = JSON.parse(companies_io.read, object_class: Company)
       users_by_company = JSON.parse(users_io.read, object_class: User)
         .filter(&:active_status)
-        .sort_by(&:last_name)
+        .sort
         .group_by(&:company_id)
 
       companies.each do |company|
